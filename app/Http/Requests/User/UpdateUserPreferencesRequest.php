@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\News;
+namespace App\Http\Requests\User;
 
 use App\Enums\NewsServiceProviders;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ListNewsRequest extends FormRequest
+class UpdateUserPreferencesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,13 @@ class ListNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sources' => 'nullable|array',
-            'sources.*' => ['string', Rule::enum(NewsServiceProviders::class)],
-            'categories' => 'nullable|array',
-            'categories.*' => 'integer|exists:categories,id',
-            'from_date' => 'nullable|date',
-            'to_date' => 'nullable|date',
+            'preferred_sources' => 'nullable|array',
+            'preferred_sources.*' => ['string', Rule::enum(NewsServiceProviders::class)],
+            'preferred_categories' => 'nullable|array',
+            'preferred_categories.*' => 'integer|exists:categories,id',
+            'preferred_authors' => 'nullable|array',
+            'preferred_authors.*' => 'integer|exists:authors,id',
+
         ];
     }
 }
