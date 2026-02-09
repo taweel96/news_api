@@ -19,7 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property Collection<Category> $categories
- * @property Collection<NewsSources> $newsSources
+ * @property array<NewsSources> $newsSources
  * @property Collection<Author> $authors
  */
 class User extends Authenticatable
@@ -76,7 +76,7 @@ class User extends Authenticatable
     public function getNewsSourcesAttribute(): array
     {
         return $this->newsSourceRecords
-            ->map(fn ($row) => $row->source)
+            ->map(fn ($row) => $row->source->value)
             ->all();
     }
 

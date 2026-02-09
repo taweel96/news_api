@@ -68,7 +68,7 @@ class Article extends Model
         $prefs = [];
         if ($userOrPrefs instanceof \App\Models\User) {
             $prefs = [
-                'preferred_sources' => $userOrPrefs->sources->pluck('source')->toArray() ?? [],
+                'preferred_sources' => $userOrPrefs->newsSources ?? [],
                 'preferred_categories' => $userOrPrefs->categories->pluck('category_id')->toArray() ?? [],
                 'preferred_authors' => $userOrPrefs->authors->pluck('author_id')->toArray() ?? [],
             ];

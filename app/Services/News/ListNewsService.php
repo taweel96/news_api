@@ -14,7 +14,7 @@ class ListNewsService
         $user = $request->user();
 
         $overrides = [];
-        if ($request->filled('source')) {
+        if ($request->filled('sources')) {
             $overrides['sources'] = array_filter($request->query('sources'));
         }
         if ($request->filled('categories')) {
