@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Enums\NewsServiceProviders;
+use App\Enums\NewsSources;
 use Illuminate\Console\Command;
 
 class FetchLatestNewsCommand extends Command
@@ -26,7 +26,7 @@ class FetchLatestNewsCommand extends Command
      */
     public function handle()
     {
-        foreach (NewsServiceProviders::cases() as $case) {
+        foreach (NewsSources::cases() as $case) {
             $case->getFetchService()->fetch();
         }
     }

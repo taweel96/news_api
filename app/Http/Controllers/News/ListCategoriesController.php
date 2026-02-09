@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News;
 
 use App\Models\Category;
+use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
 class ListCategoriesController
@@ -10,7 +11,7 @@ class ListCategoriesController
 
     public function __invoke(): JsonResponse
     {
-        return response()->json(["categories" => Category::query()->latest()->get(['id', 'name'])]);
+        return ApiResponse::success(Category::query()->latest()->get(['id', 'name']));
     }
 
 }

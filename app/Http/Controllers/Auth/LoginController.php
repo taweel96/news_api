@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Support\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController
@@ -19,7 +20,7 @@ class LoginController
         $token = $user->createToken('api-token')->plainTextToken;
 
         $user->token = $token;
-        return response()->json(['user' => $user]);
+        return ApiResponse::success($user);
     }
 
 }

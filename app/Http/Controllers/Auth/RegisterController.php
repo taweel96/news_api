@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Support\ApiResponse;
 
 class RegisterController
 {
@@ -13,7 +14,7 @@ class RegisterController
     }
 
     public function __invoke(RegisterRequest $request){
-        return $this->createNewUser->create($request->all());
+        return ApiResponse::success($this->createNewUser->create($request->all()));
     }
 
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\NewsSources;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,13 +14,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $name
  * @property string $email
  * @property string $password
- * @property array|null $preferred_sources
- * @property array|null $preferred_categories
- * @property array|null $preferred_authors
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Collection<Category> $categories
+ * @property Collection<NewsSources> $newsSources
+ * @property Collection<Author> $authors
  */
 class User extends Authenticatable
 {
@@ -34,9 +36,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'preferred_sources',
-        'preferred_categories',
-        'preferred_authors',
     ];
 
     /**
@@ -57,8 +56,44 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'preferred_sources' => 'array',
-        'preferred_categories' => 'array',
-        'preferred_authors' => 'array',
     ];
+
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'categories_users');
+    }
+
+    public function authors(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Author::class, 'authors_users');
+    }
+
+    public function newsSourceRecords()
+    {
+        return $this->hasMany(SourceUser::class);
+    }
+
+    public function getNewsSourcesAttribute(): array
+    {
+        return $this->newsSourceRecords
+            ->map(fn ($row) => $row->source)
+            ->all();
+    }
+
+    public function attachNewsSource($source): void
+    {
+        if(is_string($source)) {
+            $source = NewsSources::from($source);
+        }
+        $this->newsSourceRecords()->firstOrCreate([
+            'source' => $source->value,
+        ]);
+    }
+
+    public function hasNewsSource(NewsSources $source): bool
+    {
+        return $this->newsSourceRecords()
+            ->where('source', $source->value)
+            ->exists();
+    }
 }

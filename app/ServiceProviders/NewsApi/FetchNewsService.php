@@ -3,7 +3,7 @@
 namespace App\ServiceProviders\NewsApi;
 
 use App\Enums\Categories;
-use App\Enums\NewsServiceProviders;
+use App\Enums\NewsSources;
 use App\Interfaces\FetchNewsServiceInterface;
 use App\Models\Article;
 use App\Models\Author;
@@ -28,13 +28,11 @@ class FetchNewsService implements FetchNewsServiceInterface
             $articles = [];
 
             foreach($data as $item){
-                $authorId = null;
-                if(!empty($item['author'])){
-                    $author = Author::query()->firstOrCreate(['name' => $item['author']]);
-                    $authorId = $author->id;
-                }
+                $author = Author::query()->firstOrCreate(['name' => 'unknown']);
 
                 $published_at = Carbon::parse($item['publishedAt']);
+
+                $category = Category::query()->firstOrCreate(['name' => 'general']);
 
                 $description = $item['description'] ?? null;
                 if(!empty($item['content'])){
@@ -45,14 +43,15 @@ class FetchNewsService implements FetchNewsServiceInterface
                     $description .= $item['content'];
                 }
                 $articles [] = Article::query()->updateOrCreate([
-                    'title' => $item['title'] ?? null,
                     'link' => $item['url'] ?? null,
-                    'source' => NewsServiceProviders::NEWS_API->value,
+                    'source' => NewsSources::NEWS_API->value,
+                    'author_id' => $author->id,
+                    'category_id' => $category->id,
+                    'title' => $item['title'] ?? null,
                 ],[
                     'content' => $description,
                     'image' => $item['urlToImage'] ?? null,
                     'published_at' => $published_at,
-                    'author_id' => $authorId,
                 ]);
             }
             return $articles;

@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\News\AuthorResource;
+use App\Http\Resources\News\CategoryResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,9 +23,9 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'preferred_sources' => $this->preferred_sources,
-            'preferred_categories' => $this->preferred_categories,
-            'preferred_authors' => $this->preferred_authors,
+            'preferred_sources' => $this->newsSources,
+            'preferred_categories' => CategoryResource::collection($this->categories),
+            'preferred_authors' => AuthorResource::collection($this->authors),
             'created_at' => $this->created_at->timestamp,
             'updated_at' => $this->updated_at->timestamp,
         ];

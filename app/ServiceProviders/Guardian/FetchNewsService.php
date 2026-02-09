@@ -3,9 +3,10 @@
 namespace App\ServiceProviders\Guardian;
 
 use App\Enums\Categories;
-use App\Enums\NewsServiceProviders;
+use App\Enums\NewsSources;
 use App\Interfaces\FetchNewsServiceInterface;
 use App\Models\Article;
+use App\Models\Author;
 use App\Models\Category;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -33,12 +34,16 @@ class FetchNewsService implements FetchNewsServiceInterface
 
                 $published_at = Carbon::parse($item['webPublicationDate']);
 
+                $author = Author::query()->firstOrCreate(['name' => 'unknown']);
+
+
                 $articles [] = Article::query()->updateOrCreate([
                     'category_id' => $category->id,
-                    'title' => $item['webTitle'] ?? null,
                     'link' => $item['webUrl'] ?? null,
+                    'author_id' => $author->id,
+                    'title' => $item['webTitle'] ?? null,
                 ],[
-                    'source' => NewsServiceProviders::GUARDIAN_API->value,
+                    'source' => NewsSources::GUARDIAN_API->value,
                     'published_at' => $published_at,
                 ]);
             }

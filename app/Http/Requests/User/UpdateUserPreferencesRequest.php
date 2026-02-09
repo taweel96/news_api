@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\User;
 
-use App\Enums\NewsServiceProviders;
+use App\Enums\NewsSources;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,7 +25,7 @@ class UpdateUserPreferencesRequest extends FormRequest
     {
         return [
             'preferred_sources' => 'nullable|array',
-            'preferred_sources.*' => ['string', Rule::enum(NewsServiceProviders::class)],
+            'preferred_sources.*' => ['string', Rule::enum(NewsSources::class)],
             'preferred_categories' => 'nullable|array',
             'preferred_categories.*' => 'integer|exists:categories,id',
             'preferred_authors' => 'nullable|array',

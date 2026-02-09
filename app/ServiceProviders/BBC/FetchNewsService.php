@@ -3,9 +3,10 @@
 namespace App\ServiceProviders\BBC;
 
 use App\Enums\Categories;
-use App\Enums\NewsServiceProviders;
+use App\Enums\NewsSources;
 use App\Interfaces\FetchNewsServiceInterface;
 use App\Models\Article;
+use App\Models\Author;
 use App\Models\Category;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -31,12 +32,16 @@ class FetchNewsService implements FetchNewsServiceInterface
                 $category = Categories::map($category);
 
                 $category = Category::query()->firstOrCreate(['name' => $category]);
+
+                $author = Author::query()->firstOrCreate(['name' => 'unknown']);
+
                 foreach($items as $item){
                     $articles [] = Article::query()->updateOrCreate([
                         'category_id' => $category->id,
-                        'title' => $item['title'] ?? null,
                         'link' => $item['url'] ?? null,
-                        'source' => NewsServiceProviders::BBC_API->value,
+                        'source' => NewsSources::BBC_API->value,
+                        'author_id' => $author->id,
+                        'title' => $item['title'] ?? null,
                     ],[
                         'summary' => $item['summary'] ?? null,
                         'content' => $item['content'] ?? null,

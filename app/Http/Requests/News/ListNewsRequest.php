@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\News;
 
-use App\Enums\NewsServiceProviders;
+use App\Enums\NewsSources;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,7 +25,7 @@ class ListNewsRequest extends FormRequest
     {
         return [
             'sources' => 'nullable|array',
-            'sources.*' => ['string', Rule::enum(NewsServiceProviders::class)],
+            'sources.*' => ['string', Rule::enum(NewsSources::class)],
             'categories' => 'nullable|array',
             'categories.*' => 'integer|exists:categories,id',
             'from_date' => 'nullable|date',

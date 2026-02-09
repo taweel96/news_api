@@ -8,7 +8,7 @@ use App\ServiceProviders\Guardian\FetchNewsService as GuardianFetchNewsService;
 use App\ServiceProviders\NewsApi\FetchNewsService as NewsApiFetchNewsService;
 
 
-enum NewsServiceProviders: string
+enum NewsSources: string
 {
     case NEWS_API = 'news_api';
 

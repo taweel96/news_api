@@ -9,6 +9,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('authors', \App\Http\Controllers\News\ListAuthorsController::class);
 Route::get('categories', \App\Http\Controllers\News\ListCategoriesController::class);
+Route::get('news-sources', \App\Http\Controllers\News\ListNewsSourcesController::class);
 
 Route::post('register', \App\Http\Controllers\Auth\RegisterController::class);
 Route::post('login', \App\Http\Controllers\Auth\LoginController::class);

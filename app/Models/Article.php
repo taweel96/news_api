@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\NewsServiceProviders;
+use App\Enums\NewsSources;
 use App\Filters\ArticlesFilter;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int $category_id
  * @property string|null $link
  * @property \Illuminate\Support\Carbon|null $published_at
- * @property NewsServiceProviders $source
+ * @property NewsSources $source
  * @property int|null $author_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -39,7 +39,7 @@ class Article extends Model
         'published_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'source' => NewsServiceProviders::class,
+        'source' => NewsSources::class,
     ];
 
 
@@ -68,9 +68,9 @@ class Article extends Model
         $prefs = [];
         if ($userOrPrefs instanceof \App\Models\User) {
             $prefs = [
-                'preferred_sources' => $userOrPrefs->preferred_sources ?? [],
-                'preferred_categories' => $userOrPrefs->preferred_categories ?? [],
-                'preferred_authors' => $userOrPrefs->preferred_authors ?? [],
+                'preferred_sources' => $userOrPrefs->sources->pluck('source')->toArray() ?? [],
+                'preferred_categories' => $userOrPrefs->categories->pluck('category_id')->toArray() ?? [],
+                'preferred_authors' => $userOrPrefs->authors->pluck('author_id')->toArray() ?? [],
             ];
         } elseif (is_array($userOrPrefs)) {
             $prefs = [
