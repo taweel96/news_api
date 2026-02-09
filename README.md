@@ -30,6 +30,30 @@ A Laravel-based RESTful API for news aggregation, user preferences, and authenti
    cp .env.example .env
    php artisan key:generate
    ```
+
+   ### Configure the Database
+   By default, the project uses **SQLite**:
+   - Create the database file:
+     ```bash
+     touch database/database.sqlite
+     ```
+   - Ensure these settings in `.env`:
+     ```env
+     DB_CONNECTION=sqlite
+     DB_DATABASE=./database/database.sqlite
+     ```
+
+   To use **MySQL** or another driver, update the following variables in `.env`:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=your_database
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+   > ℹ️ Adjust values as needed for your environment.
+
 4. Run database migrations:
    ```bash
    php artisan migrate
@@ -42,6 +66,12 @@ A Laravel-based RESTful API for news aggregation, user preferences, and authenti
 6. Start the server:
    ```bash
    php artisan serve
+   ```
+   
+   ```
+7. Fetch News from external APIs:
+   ```bash
+   php artisan app:fetch-latest-news
    ```
 
 ## API Endpoints
