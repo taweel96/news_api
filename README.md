@@ -54,9 +54,10 @@ A Laravel-based RESTful API for news aggregation, user preferences, and authenti
    ```
    > ℹ️ Adjust values as needed for your environment.
 
-4. Run database migrations:
+4. Run database migrations and seeders:
    ```bash
    php artisan migrate
+   php artisan db:seed
    ```
 5. Install JS dependencies and build assets:
    ```bash
@@ -68,12 +69,22 @@ A Laravel-based RESTful API for news aggregation, user preferences, and authenti
    php artisan serve
    ```
    
-   ```
 7. Fetch News from external APIs:
    ```bash
    php artisan app:fetch-latest-news
    ```
-
+   
+8. For fulltext search, install and configure Laravel Scout with your preferred driver (e.g., Algolia, Meilisearch) and run:
+   ```bash
+   curl -L https://install.meilisearch.com | sh
+   meilisearch --master-key=masterKey
+   ```
+   
+9. Add articles to the search index:
+   ```bash
+   php artisan scout:import "App\Models\Article"
+   ```
+   
 ## API Endpoints
 
 ### Auth
@@ -158,6 +169,7 @@ A Laravel-based RESTful API for news aggregation, user preferences, and authenti
     - `with_preferences` (0 or 1, optional)
     - `date_from` (YYYY-MM-DD, optional)
     - `date_to` (YYYY-MM-DD, optional)
+    - `query` (string, optional) will search in title, description, content, category, source, and author name *will revoke preferences if provided*
   - **Example:**
     ```bash
     curl -H "Authorization: Bearer <token>" \

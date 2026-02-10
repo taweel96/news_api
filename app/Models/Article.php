@@ -7,6 +7,7 @@ use App\Filters\ArticlesFilter;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Searchable;
 
 
 /**
@@ -30,6 +31,19 @@ use Illuminate\Database\Eloquent\Builder;
 class Article extends Model
 {
     use Filterable;
+    use Searchable;
+
+    public function toSearchableArray()
+    {
+        return [
+            'title' => $this->title,
+            'content'  => $this->content,
+            'summary' => $this->summary,
+            'category' => $this->category ? $this->category->name : null,
+            'source' => $this->source->value,
+            'author' => $this->author ? $this->author->name : null,
+        ];
+    }
 
     protected $fillable = [
         'title', 'summary', 'content', 'image', 'category_id', 'link', 'published_at', 'source', 'author_id'

@@ -10,7 +10,9 @@
         "laravel/fortify": "^1.34",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.23",
         "laravel/tinker": "^2.10.1",
+        "meilisearch/meilisearch-php": "^1.16",
         "tucker-eric/eloquentfilter": "^3.4"
     },
     "require-dev": {

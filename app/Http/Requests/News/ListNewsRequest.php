@@ -30,6 +30,7 @@ class ListNewsRequest extends FormRequest
             'categories.*' => 'integer|exists:categories,id',
             'from_date' => 'nullable|date',
             'to_date' => 'nullable|date',
+            'query' => 'nullable|string',
         ];
     }
 }

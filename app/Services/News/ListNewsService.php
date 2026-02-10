@@ -26,16 +26,20 @@ class ListNewsService
 
         $perPage = (int) $request->query('per_page', 15);
 
-        $articles = Article::query()
-            ->with(['author', 'category']);
-
-        if(request()->with_preferences) {
-            $articles = $articles->forUser($user, $overrides);
+        if(request()->filled('query')) {
+            $articles = Article::search(request()->query('query'))->orderByDesc('published_at');
+        }
+        else{
+            $articles = Article::query()->with(['category', 'author']);
+            if(request()->with_preferences) {
+                $articles = $articles->forUser($user, $overrides);
+            }
+            $articles = $articles->filter($request->validated())->latest('published_at');
         }
 
 
-        return $articles->filter($request->validated())
-            ->latest('published_at')
+
+        return $articles
             ->paginate($perPage);
     }
 
