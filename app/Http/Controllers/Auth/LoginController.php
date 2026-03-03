@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController
 {
-    public function __invoke(LoginRequest $request){
+    public function __invoke(LoginRequest $request)
+    {
 
         $user = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
-        if(!$user){
+        if (! $user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -20,7 +21,7 @@ class LoginController
         $token = $user->createToken('api-token')->plainTextToken;
 
         $user->token = $token;
+
         return ApiResponse::success($user);
     }
-
 }

@@ -8,7 +8,8 @@ use App\Support\ApiResponse;
 
 class UpdateUserPreferencesController
 {
-    public function __invoke(UpdateUserPreferencesRequest $request){
+    public function __invoke(UpdateUserPreferencesRequest $request)
+    {
         $user = auth()->user();
         $data = $request->validated();
 
@@ -19,7 +20,7 @@ class UpdateUserPreferencesController
         foreach ($data['preferred_sources'] as $newsSource) {
             $user->attachNewsSource($newsSource);
         }
+
         return ApiResponse::success(UserResource::make($user));
     }
-
 }

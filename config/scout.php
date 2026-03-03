@@ -140,9 +140,9 @@ return [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
-             'articles' => [
-                 'sortableAttributes' => ['published_at'],
-             ],
+            'articles' => [
+                'sortableAttributes' => ['published_at'],
+            ],
         ],
     ],
 

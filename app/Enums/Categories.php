@@ -16,14 +16,14 @@ enum Categories: string
     case POLITICS = 'politics';
     case WORLD = 'world';
 
-
-
-    public static function map(string $category): self {
+    public static function map(string $category): self
+    {
         $category = str_replace(' ', '_', strtolower($category));
-        return match ($category){
+
+        return match ($category) {
             'football', 'volleyball', 'basketball', 'sports', 'sport', 'golf', 'hooky', 'tennis', 'tennis_ball' => self::SPORTS,
             'it', 'tech', 'software', 'software_engineering', 'developer', 'technology', => self::TECHNOLOGY,
-            'finance', 'currency', 'stocks'  => self::FINANCE,
+            'finance', 'currency', 'stocks' => self::FINANCE,
             'art', 'cinema', 'theater', 'movie', 'movies', 'series', 'tv_show' => self::ART,
             'chemistry', 'physics', 'math', 'mathematics', 'science', 'scientific' => self::SCIENCE,
             'culture' => self::CULTURE,

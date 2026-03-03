@@ -5,10 +5,9 @@ namespace App\Models;
 use App\Enums\NewsSources;
 use App\Filters\ArticlesFilter;
 use EloquentFilter\Filterable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
-
 
 /**
  * @property int $id
@@ -23,11 +22,9 @@ use Laravel\Scout\Searchable;
  * @property int|null $author_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @property ?Author $author
  * @property ?Category $category
  */
-
 class Article extends Model
 {
     use Filterable;
@@ -37,7 +34,7 @@ class Article extends Model
     {
         return [
             'title' => $this->title,
-            'content'  => $this->content,
+            'content' => $this->content,
             'summary' => $this->summary,
             'category' => $this->category ? $this->category->name : null,
             'source' => $this->source->value,
@@ -46,7 +43,7 @@ class Article extends Model
     }
 
     protected $fillable = [
-        'title', 'summary', 'content', 'image', 'category_id', 'link', 'published_at', 'source', 'author_id'
+        'title', 'summary', 'content', 'image', 'category_id', 'link', 'published_at', 'source', 'author_id',
     ];
 
     protected $casts = [
@@ -55,7 +52,6 @@ class Article extends Model
         'updated_at' => 'datetime',
         'source' => NewsSources::class,
     ];
-
 
     public function modelFilter(): string
     {
@@ -66,16 +62,14 @@ class Article extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
     public function author()
     {
         return $this->belongsTo(Author::class, 'author_id');
     }
 
     /**
-     * @param Builder $query
-     * @param \App\Models\User|array|null $userOrPrefs
-     * @param array $overrides
-     * @return Builder
+     * @param  \App\Models\User|array|null  $userOrPrefs
      */
     public function scopeForUser(Builder $query, $userOrPrefs = null, array $overrides = []): Builder
     {
@@ -98,15 +92,15 @@ class Article extends Model
         $categories = $overrides['categories'] ?? $prefs['preferred_categories'] ?? [];
         $authors = $overrides['authors'] ?? $prefs['preferred_authors'] ?? [];
 
-        if (!empty($sources)) {
+        if (! empty($sources)) {
             $query->whereIn('source', $sources);
         }
 
-        if (!empty($categories)) {
+        if (! empty($categories)) {
             $query->whereIn('category_id', $categories);
         }
 
-        if (!empty($authors)) {
+        if (! empty($authors)) {
             $query->whereIn('author_id', $authors);
         }
 

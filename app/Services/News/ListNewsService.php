@@ -8,7 +8,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ListNewsService
 {
-
     public function handle(Request $request): LengthAwarePaginator
     {
         $user = $request->user();
@@ -26,21 +25,17 @@ class ListNewsService
 
         $perPage = (int) $request->query('per_page', 15);
 
-        if(request()->filled('query')) {
+        if (request()->filled('query')) {
             $articles = Article::search(request()->query('query'))->orderByDesc('published_at');
-        }
-        else{
+        } else {
             $articles = Article::query()->with(['category', 'author']);
-            if(request()->with_preferences) {
+            if (request()->with_preferences) {
                 $articles = $articles->forUser($user, $overrides);
             }
             $articles = $articles->filter($request->validated())->latest('published_at');
         }
 
-
-
         return $articles
             ->paginate($perPage);
     }
-
 }

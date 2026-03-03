@@ -25,7 +25,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -82,7 +82,7 @@ class User extends Authenticatable
 
     public function attachNewsSource($source): void
     {
-        if(is_string($source)) {
+        if (is_string($source)) {
             $source = NewsSources::from($source);
         }
         $this->newsSourceRecords()->firstOrCreate([

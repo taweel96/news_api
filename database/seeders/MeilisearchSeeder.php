@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Meilisearch\Client;
 use Illuminate\Database\Seeder;
+use Meilisearch\Client;
 
 class MeilisearchSeeder extends Seeder
 {

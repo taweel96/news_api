@@ -8,10 +8,8 @@ use Illuminate\Http\JsonResponse;
 
 class ListCategoriesController
 {
-
     public function __invoke(): JsonResponse
     {
         return ApiResponse::success(Category::query()->latest()->get(['id', 'name']));
     }
-
 }

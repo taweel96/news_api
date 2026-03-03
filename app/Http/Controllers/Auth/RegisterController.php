@@ -8,13 +8,10 @@ use App\Support\ApiResponse;
 
 class RegisterController
 {
-    public function __construct(protected CreateNewUser $createNewUser)
+    public function __construct(protected CreateNewUser $createNewUser) {}
+
+    public function __invoke(RegisterRequest $request)
     {
-
-    }
-
-    public function __invoke(RegisterRequest $request){
         return ApiResponse::success($this->createNewUser->create($request->all()));
     }
-
 }

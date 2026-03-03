@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class ListNewsSourcesController extends Controller
 {
-
     public function __invoke(Request $request)
     {
         return ApiResponse::success(NewsSources::cases());

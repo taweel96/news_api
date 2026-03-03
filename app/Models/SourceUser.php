@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class SourceUser extends Model
 {
     protected $table = 'sources_users';
+
     protected $fillable = ['source', 'user_id'];
 
     protected $casts = [

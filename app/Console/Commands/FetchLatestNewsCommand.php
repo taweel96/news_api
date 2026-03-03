@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Enums\NewsSources;
+use App\Services\News\FetchServiceFactory;
+use App\Services\News\ParseNewsApiResponseFactory;
+use App\Services\News\UpdateLocalNewsDatasetFactory;
 use Illuminate\Console\Command;
 
 class FetchLatestNewsCommand extends Command
@@ -21,13 +24,30 @@ class FetchLatestNewsCommand extends Command
      */
     protected $description = 'Command description';
 
+    public function __construct(
+        protected FetchServiceFactory $fetchServiceFactory,
+        protected ParseNewsApiResponseFactory $parseNewsApiResponseFactory,
+        protected UpdateLocalNewsDatasetFactory $updateLocalNewsDatasetFactory,
+    ) {
+        parent::__construct();
+    }
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
         foreach (NewsSources::cases() as $case) {
-            $case->getFetchService()->fetch();
+
+            $fetchService = $this->fetchServiceFactory->create($case);
+            $articles = $fetchService->fetch();
+
+            $parseService = $this->parseNewsApiResponseFactory->create($case);
+            $parsedArticles = $parseService->parse($articles);
+
+            $updateLocalNewsDatasetService = $this->updateLocalNewsDatasetFactory->create($case);
+            $updateLocalNewsDatasetService->update($parsedArticles);
+
         }
     }
 }
